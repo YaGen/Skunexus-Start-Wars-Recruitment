@@ -1,14 +1,39 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import { ThemeProvider, createGlobalStyle } from "styled-components";
+import theme from "@rebass/preset";
+import reset from "styled-reset";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import "./index.css";
+import App from "./components/App";
+import reportWebVitals from "./reportWebVitals";
+
+import { configureStore, history } from "./store";
+
+const store = configureStore();
+
+const GlobalStyle = createGlobalStyle`
+  ${reset}
+  body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    display: block;
+  }
+`;
+
+render(
+  <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+      <GlobalStyle />
+    </ThemeProvider>
+  </Provider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
